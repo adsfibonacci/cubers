@@ -5,23 +5,25 @@
 #include <array>
 #include <string>
 #include <cstring>
-#include <iostream> 
+#include <iostream>
+#include <fstream>
 
-using std::string, std::memcpy, std::memset;
 using std::cout, std::endl, std::cerr;
+using std::ifstream;
+using std::string, std::memcpy, std::memset;
+
 
 const size_t faces = 6;
 const size_t dim = 3;
 
 class cube {
 private:
-  uint8_t m_pos[faces][dim][dim];
-  
+  uint8_t m_pos[faces][dim][dim];  
 
 public:
   cube();
   cube(const uint8_t (&pos)[faces][dim][dim]);
-  cube(string sequence);
+  cube(const string &sequence, bool file);
 
   void reset();
 
@@ -31,6 +33,7 @@ public:
   void rotatecw(uint8_t f);
   void rotateccw(uint8_t f);
   void turn(char c, bool invert = false);
+  void turns(const string &sequence);
 
   void printCube();
 

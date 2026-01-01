@@ -1,0 +1,4 @@
+CompileFlags:
+  Add:
+    - -I/home/alex/.pyenv/versions/3.12.7/include/python3.12
+    - -I/home/alex/.pyenv/versions/3.12.7/lib/python3.12/site-packages/pybind11/include

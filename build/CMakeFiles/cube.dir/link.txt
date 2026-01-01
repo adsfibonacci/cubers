@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -shared -flto=auto -Wl,--dependency-file=CMakeFiles/cube.dir/link.d  -o cube.cpython-312-x86_64-linux-gnu.so CMakeFiles/cube.dir/model.cpp.o CMakeFiles/cube.dir/exports.cpp.o

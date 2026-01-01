@@ -6,15 +6,29 @@ cube::cube() {
   }
   //testing();  
 }
-cube::cube(const uint8_t (&pos)[faces][dim][dim]) {
+cube::cube(const uint8_t (&pos)[faces][dim][dim]) : cube() {
   memcpy(m_pos, pos, sizeof(m_pos));
+}
+cube::cube(const string &sequence, bool file) : cube() {
+  if (file) {
+    ifstream file(sequence);
+    if(!file.is_open()) {cerr << "File Not Open" << endl;}
+    for (size_t i = 0; i < faces; ++i) {
+      for (size_t j = 0; j < dim; ++j) {
+        for (size_t k = 0; k < dim; ++k)
+          file >> m_pos[i][j][k];
+      }
+    }
+    file.close();
+  } else 
+    turns(sequence);
 }
 
 void cube::reset() {
   for (uint8_t i = 0; i < faces; ++i) {
     memset(m_pos[i], i, dim*dim);
   }
-  //testing();  
+  //testing();
 }  
 
 inline void cube::permute(uint8_t f, bool i) {
@@ -34,7 +48,7 @@ inline void cube::permute(uint8_t f, bool i) {
     s1 = m_pos[1][2];
     s2 = m_pos[2][2];
     s3 = m_pos[3][2];
-    s4 = m_pos[4][0];
+    s4 = m_pos[4][2];
     break;
   case 3:
     s1 = m_pos[0][0];
@@ -173,7 +187,7 @@ void cube::turn(char c, bool invert) {
     rotatecw(5);        
 
     permute(4, !invert);
-    if (invert)
+    if (!invert)
       rotatecw(4);
     else
       rotateccw(4);
@@ -186,11 +200,25 @@ void cube::turn(char c, bool invert) {
   default:
     cerr << "IVALID" << endl;
     break;    
-  }    
-}  
+  }
+}
+
+void cube::turns(const string &sequence) {
+  for (string::const_iterator it = sequence.begin(); it != sequence.end();
+       ++it) {
+    char c = *it;
+    if ((it + 1) != sequence.end() && *(it + 1) == '\'') {
+      ++it;
+      turn(c, true);
+    }      
+    else
+      turn(c);
+    
+  }
+}
 
 void cube::printCube() {
-  constexpr char lut[] = { 'w','r','b','o','g','y' };
+  constexpr char lut[] = { 'w','o','g','r','b','y' };
   // --- White (top) ---
   for (size_t row = 0; row < dim; ++row) {
     for (size_t s = 0; s < dim; ++s) {
